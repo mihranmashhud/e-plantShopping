@@ -53,6 +53,9 @@ const CartItem = ({ onContinueShopping }) => {
   return (
     <div className="cart-container">
       <h2 style={{ color: "black" }}>
+        Total Amount of Plants: {cart.reduce((acc, item) => acc + item.quantity, 0)}
+      </h2>
+      <h2 style={{ color: "black" }}>
         Total Cart Amount: ${calculateTotalAmount()}
       </h2>
       <div>
@@ -104,7 +107,9 @@ const CartItem = ({ onContinueShopping }) => {
           Continue Shopping
         </button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button className="get-started-button1" onClick={() => {
+          alert("Coming Soon")
+        }}>Checkout</button>
       </div>
     </div>
   );

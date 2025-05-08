@@ -2,12 +2,13 @@ import React, { useState, useEffect } from "react";
 import "./ProductList.css";
 import CartItem from "./CartItem";
 import { addItem } from "./CartSlice";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 function ProductList({ onHomeClick }) {
   const [showCart, setShowCart] = useState(false);
   const [showPlants, setShowPlants] = useState(false); // State to control the visibility of the About Us page
   const [addedToCart, setAddedToCart] = useState({});
   const dispatch = useDispatch();
+  const cart = useSelector((state) => state.cart.items);
 
   const plantsArray = [
     {
@@ -328,6 +329,7 @@ function ProductList({ onHomeClick }) {
           <div>
             {" "}
             <a href="#" onClick={(e) => handleCartClick(e)} style={styleA}>
+              <div class="cart_quantity_count">{cart.reduce((acc, item) => acc + item.quantity, 0)}</div>
               <h1 className="cart">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -368,9 +370,22 @@ function ProductList({ onHomeClick }) {
                     <p class="product-price">{plant.cost}</p>
                     <button
                       className="product-button"
+                      style={
+                        cart.find((item) => item.name === plant.name)
+                          ? {
+                              background: "gray",
+                              pointerEvents: "none",
+                            }
+                          : {}
+                      }
                       onClick={() => handleAddToCart(plant)}
+                      disabled={cart
+                        .map((item) => item.name)
+                        .includes(plant.name)}
                     >
-                      Add to Cart
+                      {cart.find((item) => item.name === plant.name)
+                        ? "Added to Cart"
+                        : "Add to Cart"}
                     </button>
                   </div>
                 ))}
